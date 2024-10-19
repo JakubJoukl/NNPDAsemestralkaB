@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -28,7 +31,8 @@ public class Sensor {
     @NotNull
     private MeasuringDevice measuringDevice;
 
-    private transient Double measuredValue;
+    @OneToMany(mappedBy = "sensor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MeasuredValue> measuredValues = new ArrayList<>();
 
     public Sensor(String sensorName){
         this.sensorName = sensorName;

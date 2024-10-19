@@ -28,6 +28,10 @@ public class SensorService {
         sensorRepository.save(sensor);
     }
 
+    public List<Sensor> getAllSensors(){
+        return sensorRepository.findAll();
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public boolean addSensor(String sensorName, String deviceName, User user) {
         MeasuringDevice measuringDevice = measuringDeviceService.getUserMeasuringDeviceByName(deviceName, user);

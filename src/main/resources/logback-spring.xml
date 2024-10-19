@@ -1,0 +1,29 @@
+<configuration>
+    <!-- Console Appender: Zobrazí všechny logy -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Logstash Appender: Odesílá pouze ERROR logy do Logstash -->
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:5000</destination> <!-- Připojuje se na Logstash -->
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+        <!-- Filter, který povolí pouze ERROR logy -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <!-- Root logger: Zobrazí všechny logy v konzoli -->
+    <root level="info">
+        <appender-ref ref="console" />
+    </root>
+
+    <!-- Error logger: Odesílá ERROR logy do Logstash -->
+    <logger name="ERROR_LOGGER" level="error" additivity="false">
+        <appender-ref ref="logstash" />
+    </logger>
+
+</configuration>

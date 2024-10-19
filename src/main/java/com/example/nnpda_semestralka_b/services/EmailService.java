@@ -51,7 +51,7 @@ public class EmailService {
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
 
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("nnpda_semestralka_b@gmail.com", "akxx jzcv whcy zptj");
+                return new PasswordAuthentication("semestralkaa@gmail.com", "akxx jzcv whcy zptj");
 
             }
 
@@ -72,7 +72,7 @@ public class EmailService {
             user.getResetTokens().add(resetToken);
             userService.saveResetToken(resetToken);
 
-            message.setFrom(new InternetAddress("nnpda_semestralka_b@gmail.com"));
+            message.setFrom(new InternetAddress("semestralkaa@gmail.com"));
             message.setRecipients(MimeMessage.RecipientType.TO, user.getEmail());
             message.setSubject("Test email reset hesla pro " + user.getEmail());
 
