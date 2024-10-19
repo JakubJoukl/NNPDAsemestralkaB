@@ -1,4 +1,5 @@
 ##zkontrolovat pripadne reseni na https://github.com/dimMaryanto93/docker-logstash-input-jdbc/blob/master/compose/mysql/docker-compose.mysql-5.7.yaml
+##a hlavne tohle https://stackoverflow.com/questions/53237741/logstash-com-mysql-jdbc-driver-not-loaded
 version: '3.6'
 services:
   Elasticsearch:
@@ -22,7 +23,7 @@ services:
     restart: always
     volumes:
       - ./logstash/:/logstash_dir
-      - ./logstash/mysql-connector-j-9.1.0.jar:/usr/share/logstash/mysql-connector-java.jar
+      - ./logstash/mysql-connector-j-9.1.0.jar:/usr/share/logstash-core/lib/jars/mysql-connector-java.jar
     command: logstash -f /logstash_dir/logstash.conf
     depends_on:
       - Elasticsearch
