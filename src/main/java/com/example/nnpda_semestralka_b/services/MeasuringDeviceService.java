@@ -7,6 +7,7 @@ import com.example.nnpda_semestralka_b.entity.Sensor;
 import com.example.nnpda_semestralka_b.entity.User;
 import com.example.nnpda_semestralka_b.repositories.MeasuringDeviceRepository;
 import com.example.nnpda_semestralka_b.repositories.SensorRepository;
+import com.example.nnpda_semestralka_b.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,11 @@ public class MeasuringDeviceService {
         }
     }
 
+    public List<MeasuringDevice> getMeasuringDevicesByUser(User user) {
+        if(user == null) throw new RuntimeException("User not found");
+        return user.getMeasuringDevices();
+    }
+
     public MeasuringDevice getUserMeasuringDeviceByName(String deviceName, User user) {
         return user.getMeasuringDevices().stream().filter(measuringDevice1 -> measuringDevice1.getDeviceName().equals(deviceName)).findFirst().orElse(null);
     }
@@ -81,6 +87,10 @@ public class MeasuringDeviceService {
 
     public MeasuringDeviceDto convertToDto(MeasuringDevice measuringDevice) {
         return modelMapper.map(measuringDevice, MeasuringDeviceDto.class);
+    }
+
+    public List<MeasuringDeviceDto> convertToDto(List<MeasuringDevice> measuringDevices) {
+        return measuringDevices.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     public MeasuringDevice convertToEntity(MeasuringDeviceDto measuringDeviceDto) {

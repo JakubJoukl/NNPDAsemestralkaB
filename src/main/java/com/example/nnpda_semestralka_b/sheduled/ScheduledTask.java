@@ -20,7 +20,7 @@ public class ScheduledTask {
 
     Random random = new Random();
 
-    @Scheduled(fixedRate = 1000)
+    //@Scheduled(fixedRate = 1000)
     @Transactional(rollbackFor = Exception.class)
     public void performTask() {
         List<Sensor> sensors = sensorService.getAllSensors();

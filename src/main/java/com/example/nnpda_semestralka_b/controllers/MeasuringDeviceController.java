@@ -67,4 +67,14 @@ public class MeasuringDeviceController {
         if(deviceUpdated) return ResponseEntity.status(200).body("Device updated");
         else return ResponseEntity.status(500).body("Failed to update device");
     }
+
+    @GetMapping("/getDevices")
+    public ResponseEntity<?> getDevices(){
+        try {
+            List<MeasuringDevice> measuringDevices = measuringDeviceService.getMeasuringDevicesByUser(userService.getUserFromContext());
+            return ResponseEntity.status(200).body(measuringDeviceService.convertToDto(measuringDevices));
+        } catch (Exception e){
+            return ResponseEntity.status(404).body("Failed to get user devices");
+        }
+    }
 }
