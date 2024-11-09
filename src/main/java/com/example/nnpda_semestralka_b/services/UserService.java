@@ -44,8 +44,7 @@ public class UserService implements UserDetailsService {
 
     public User getUserFromContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = getUserByUsername(authentication.getName());
-        return user;
+        return getUserByUsername(authentication.getName());
     }
 
     public ResetToken getResetTokenByValue(String resetTokenValue){

@@ -1,7 +1,10 @@
 package com.example.nnpda_semestralka_b.services;
 
 import com.example.nnpda_semestralka_b.dto.measuringDevice.AddMeasuringDeviceSensorDto;
+import com.example.nnpda_semestralka_b.dto.measuringDevice.MeasuredValueDto;
 import com.example.nnpda_semestralka_b.dto.measuringDevice.MeasuringDeviceDto;
+import com.example.nnpda_semestralka_b.dto.sensor.AddSensorDto;
+import com.example.nnpda_semestralka_b.entity.MeasuredValue;
 import com.example.nnpda_semestralka_b.entity.MeasuringDevice;
 import com.example.nnpda_semestralka_b.entity.Sensor;
 import com.example.nnpda_semestralka_b.entity.User;
@@ -86,7 +89,10 @@ public class MeasuringDeviceService {
     }
 
     public MeasuringDeviceDto convertToDto(MeasuringDevice measuringDevice) {
-        return modelMapper.map(measuringDevice, MeasuringDeviceDto.class);
+        MeasuringDeviceDto measuringDeviceDto = modelMapper.map(measuringDevice, MeasuringDeviceDto.class);
+        List<AddMeasuringDeviceSensorDto> addSensorDtos = measuringDevice.getSensors().stream().map(sensor -> modelMapper.map(sensor, AddMeasuringDeviceSensorDto.class)).collect(Collectors.toList());
+        measuringDeviceDto.setSensors(addSensorDtos);
+        return measuringDeviceDto;
     }
 
     public List<MeasuringDeviceDto> convertToDto(List<MeasuringDevice> measuringDevices) {
@@ -99,6 +105,36 @@ public class MeasuringDeviceService {
 
     public Sensor convertAddMeasuringDeviceSensorDtoToEntity(AddMeasuringDeviceSensorDto sensorDto){
         return new Sensor(sensorDto.getSensorName());
+    }
+
+    public List<MeasuredValueDto> convertToDtoList(List<MeasuredValue> measuredValues) {
+        return measuredValues.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public MeasuredValueDto convertToDto(MeasuredValue measuredValue) {
+        return new MeasuredValueDto(
+                measuredValue.getMeasuredValueId(),
+                measuredValue.getMeasuredOn(),
+                measuredValue.getMeasuredValue(),
+                measuredValue.getSensor().getSensorId()
+        );
+    }
+
+    public List<MeasuredValue> convertToEntityList(List<MeasuredValueDto> measuredValueDtos, Sensor sensor) {
+        return measuredValueDtos.stream()
+                .map(dto -> convertToEntity(dto, sensor))
+                .collect(Collectors.toList());
+    }
+
+    public MeasuredValue convertToEntity(MeasuredValueDto dto, Sensor sensor) {
+        MeasuredValue measuredValue = new MeasuredValue();
+        measuredValue.setMeasuredValueId(dto.getMeasuredValue());
+        measuredValue.setMeasuredOn(dto.getMeasuredOn());
+        measuredValue.setMeasuredValue(dto.getMeasuredValue());
+        measuredValue.setSensor(sensor);
+        return measuredValue;
     }
 
     public List<Sensor> convertAddMeasuringDeviceSensorDtoToEntityList(List<AddMeasuringDeviceSensorDto> sensorDtos) {
